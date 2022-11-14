@@ -1,0 +1,5 @@
+[edureka@localhost Desktop]$ hadoop fs -ls hadoopproject
+22/11/07 13:34:32 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 1 items
+-rw-r--r--   1 edureka supergroup    5217014 2022-11-07 12:59 hadoopproject/pseudo_facebook.csv
+
