@@ -1,0 +1,20 @@
+[edureka@localhost Desktop]$ hive
+
+
+Logging initialized using configuration in jar:file:/usr/lib/hive-0.13.1-bin/lib/hive-common-0.13.1.jar!/hive-log4j.properties
+hive> show databases;
+
+hive> use ytsession;
+
+hive> create table project(userid int,age int, dob_day int,dob_year int,dob_month int, gender string,tenure int,friend_count int,friendships_initiated int,likes int,likes_received int,mobile_likes int,mobile_likes_received int,www_likes int,www_likes_received int)row format delimited fields terminated by ',' stored as textfile location '/user/edureka/hadoopproject/';
+
+Time taken: 0.294 seconds
+
+hive> select * from project limit 3;
+
+hive> select avg(age) from project;
+
+hive> select gender ,avg(likes_received) from project group by gender;
+
+hive> select avg(age)from project  where age>=13 AND age<=25;
+
