@@ -1,0 +1,140 @@
+[edureka@localhost Desktop]$ hive
+22/11/07 13:35:26 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+22/11/07 13:35:26 INFO Configuration.deprecation: mapred.min.split.size is deprecated. Instead, use mapreduce.input.fileinputformat.split.minsize
+22/11/07 13:35:26 INFO Configuration.deprecation: mapred.reduce.tasks.speculative.execution is deprecated. Instead, use mapreduce.reduce.speculative
+22/11/07 13:35:26 INFO Configuration.deprecation: mapred.min.split.size.per.node is deprecated. Instead, use mapreduce.input.fileinputformat.split.minsize.per.node
+22/11/07 13:35:26 INFO Configuration.deprecation: mapred.input.dir.recursive is deprecated. Instead, use mapreduce.input.fileinputformat.input.dir.recursive
+22/11/07 13:35:26 INFO Configuration.deprecation: mapred.min.split.size.per.rack is deprecated. Instead, use mapreduce.input.fileinputformat.split.minsize.per.rack
+22/11/07 13:35:26 INFO Configuration.deprecation: mapred.max.split.size is deprecated. Instead, use mapreduce.input.fileinputformat.split.maxsize
+22/11/07 13:35:26 INFO Configuration.deprecation: mapred.committer.job.setup.cleanup.needed is deprecated. Instead, use mapreduce.job.committer.setup.cleanup.needed
+
+Logging initialized using configuration in jar:file:/usr/lib/hive-0.13.1-bin/lib/hive-common-0.13.1.jar!/hive-log4j.properties
+hive> show databases;
+OK
+default
+userdb
+ytsession
+Time taken: 0.274 seconds, Fetched: 3 row(s)
+hive> use ytsession;
+OK
+Time taken: 0.014 seconds
+hive> create table project(userid int,age int, dob_day int,dob_year int,dob_month int, gender string,tenure int,friend_count int,friendships_initiated int,likes int,likes_received int,mobile_likes int,mobile_likes_received int,www_likes int,www_likes_received int)row format delimited fields terminated by ',' stored as textfile location '/user/edureka/hadoopproject/';
+OK
+Time taken: 0.294 seconds
+hive> select * from project limit 3;
+OK
+NULL	NULL	NULL	NULL	NULL	gender	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL
+2094382	14	19	1999	11	male	266	0	0	0	00	0	0	0
+1192601	14	2	1999	11	female	6	0	0	0	00	0	0	0
+Time taken: 0.246 seconds, Fetched: 3 row(s)
+hive> select avg(age) from project;
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1667805780551_0001, Tracking URL = http://localhost:8088/proxy/application_1667805780551_0001/
+Kill Command = /usr/lib/hadoop-2.2.0/bin/hadoop job  -kill job_1667805780551_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2022-11-07 13:40:46,271 Stage-1 map = 0%,  reduce = 0%
+2022-11-07 13:40:51,457 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.52 sec
+2022-11-07 13:40:56,560 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 2.18 sec
+MapReduce Total cumulative CPU time: 2 seconds 180 msec
+Ended Job = job_1667805780551_0001
+MapReduce Jobs Launched: 
+Job 0: Map: 1  Reduce: 1   Cumulative CPU: 2.18 sec   HDFS Read: 5217236 HDFS Write: 18 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 180 msec
+OK
+37.28022383160106
+Time taken: 16.869 seconds, Fetched: 1 row(s)
+hive> select gender ,avg(likes_recd) from project group by gender;
+FAILED: SemanticException [Error 10004]: Line 1:19 Invalid table alias or column reference 'likes_recd': (possible column names are: userid, age, dob_day, dob_year, dob_month, gender, tenure, friend_count, friendships_initiated, likes, likes_received, mobile_likes, mobile_likes_received, www_likes, www_likes_received)
+hive> select gender ,avg(likes_received) from project group by gender;
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1667805780551_0002, Tracking URL = http://localhost:8088/proxy/application_1667805780551_0002/
+Kill Command = /usr/lib/hadoop-2.2.0/bin/hadoop job  -kill job_1667805780551_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2022-11-07 13:45:10,304 Stage-1 map = 0%,  reduce = 0%
+2022-11-07 13:45:14,408 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.09 sec
+2022-11-07 13:45:19,513 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 1.7 sec
+MapReduce Total cumulative CPU time: 1 seconds 700 msec
+Ended Job = job_1667805780551_0002
+MapReduce Jobs Launched: 
+Job 0: Map: 1  Reduce: 1   Cumulative CPU: 1.7 sec   HDFS Read: 5217236 HDFS Write: 80 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 700 msec
+OK
+NA	157.38285714285715
+female	251.4354349878273
+gender	NULL
+male	67.91154778570697
+Time taken: 13.671 seconds, Fetched: 4 row(s)
+hive> select avg(age) where age>=13 AND age<=25;
+FAILED: SemanticException [Error 10004]: Line 1:22 Invalid table alias or column reference 'age': (possible column names are: )
+hive> select avg(age)from project  where age>=13 AND age<=25;
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1667805780551_0003, Tracking URL = http://localhost:8088/proxy/application_1667805780551_0003/
+Kill Command = /usr/lib/hadoop-2.2.0/bin/hadoop job  -kill job_1667805780551_0003
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2022-11-07 14:12:53,240 Stage-1 map = 0%,  reduce = 0%
+2022-11-07 14:12:58,370 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.33 sec
+2022-11-07 14:13:02,447 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 2.05 sec
+MapReduce Total cumulative CPU time: 2 seconds 50 msec
+Ended Job = job_1667805780551_0003
+MapReduce Jobs Launched: 
+Job 0: Map: 1  Reduce: 1   Cumulative CPU: 2.05 sec   HDFS Read: 5217236 HDFS Write: 19 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 50 msec
+OK
+19.703640702152292
+Time taken: 13.691 seconds, Fetched: 1 row(s)
+hive> select avg(friends) from projects where age>=25 AND age<=25;
+FAILED: SemanticException [Error 10001]: Line 1:25 Table not found 'projects'
+hive> select avg(friends) from projects where age>=25;            
+FAILED: SemanticException [Error 10001]: Line 1:25 Table not found 'projects'
+hive> select avg(friends) from project where age>=25; 
+FAILED: SemanticException [Error 10004]: Line 1:11 Invalid table alias or column reference 'friends': (possible column names are: userid, age, dob_day, dob_year, dob_month, gender, tenure, friend_count, friendships_initiated, likes, likes_received, mobile_likes, mobile_likes_received, www_likes, www_likes_received)
+hive> select avg(friend_count) from project where age>=25;
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1667805780551_0004, Tracking URL = http://localhost:8088/proxy/application_1667805780551_0004/
+Kill Command = /usr/lib/hadoop-2.2.0/bin/hadoop job  -kill job_1667805780551_0004
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2022-11-07 14:16:06,162 Stage-1 map = 0%,  reduce = 0%
+2022-11-07 14:16:10,281 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.2 sec
+2022-11-07 14:16:15,392 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 1.86 sec
+MapReduce Total cumulative CPU time: 1 seconds 860 msec
+Ended Job = job_1667805780551_0004
+MapReduce Jobs Launched: 
+Job 0: Map: 1  Reduce: 1   Cumulative CPU: 1.86 sec   HDFS Read: 5217236 HDFS Write: 19 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 860 msec
+OK
+141.74068670524065
+Time taken: 13.791 seconds, Fetched: 1 row(s)
+hive> 
+
